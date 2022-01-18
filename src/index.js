@@ -2,16 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+export const stripePromise = loadStripe(
+  'pk_test_51KHcxzGkESe8kP2M0wTCXE6svy0BZHKhVrzwdoMEmatmeuiN6ZEHAwwLScQVeFeWFPvH0UVRIOdeLfN5UXUTcdMT00lMn1AYhj'
+);
+//notes
+// can scope down element tree if you want elements to only be available on a payment page. which I might do.
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Elements stripe={stripePromise}>
+        <App />
+    </Elements>
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
