@@ -18,8 +18,6 @@ function App() {
             <li>
               <Link to="/">Home</Link>
             </li>
-            </ul>
-            {/*
             <li>
               <Link to="/checkout">
                 <span aria-label="emoji" role="img">
@@ -36,7 +34,7 @@ function App() {
                 Payments
               </Link>
             </li>
-            <li>
+            {/*<li>
               <Link to="/customers">
                 <span aria-label="emoji" role="img">
                   🧑🏿‍🤝‍🧑🏻
@@ -53,6 +51,7 @@ function App() {
               </Link>
             </li>
           </ul>*/}
+        </ul>
         </nav>
 
         <main>
@@ -61,8 +60,8 @@ function App() {
             <Route path="/checkout" element={<Checkout/>}/>
             <Route path="/success" element={<CheckoutSuccess/>}/>
             <Route path="/failed" element={<CheckoutFail/>}/>
-            {/*<Route path="/payments" element={<Payments/>}/>
-            <Route path="/customers" element={<Customers/>}/>
+            <Route path="/payments" element={<Payments/>}/>
+            {/*<Route path="/customers" element={<Customers/>}/>
             <Route path="/subscriptions" element={<Subscriptions/>}/>*/
             }
           </Routes>}
