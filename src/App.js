@@ -3,8 +3,8 @@ import './App.css';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-/*import { Checkout, CheckoutSuccess, CheckoutFail } from './Checkout';
-import Payments from './Payments';
+import { Checkout, CheckoutSuccess, CheckoutFail } from './Checkout';
+/*import Payments from './Payments';
 import Customers from './Customers';
 import Subscriptions from './Subscriptions';
 */
@@ -58,12 +58,13 @@ function App() {
         <main>
           {<Routes>
             <Route path="/" element={<Home/>}/>
-            {/*<Route path="/checkout" element={<Checkout/>}/>
-            <Route path="/payments" element={<Payments/>}/>
+            <Route path="/checkout" element={<Checkout/>}/>
+            <Route path="/sucess" element={<CheckoutSuccess/>}/>
+            <Route path="/failed" element={<CheckoutFail/>}/>
+            {/*<Route path="/payments" element={<Payments/>}/>
             <Route path="/customers" element={<Customers/>}/>
-            <Route path="/subscriptions" element={<Subscriptions/>}/>
-            <Route path="/sucess" element={<Sucess/>}/>
-          <Route path="/failed" element={<CheckoutFail/>}/>*/}
+            <Route path="/subscriptions" element={<Subscriptions/>}/>*/
+            }
           </Routes>}
         </main>
       </div>
