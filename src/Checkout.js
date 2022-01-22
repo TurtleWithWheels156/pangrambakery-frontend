@@ -44,7 +44,13 @@ export function Checkout() {
 
     return (
         <>
-            <div>
+            <h2>Stripe Checkout</h2>
+            <p>
+                Shopping-cart scenario. Change the quantity
+                of the products below, then click checkout to open the Stripe Checkout
+                window.
+            </p>
+            <div className="product">
                 <h3>{product.name}</h3>
                 <h4>Stripe Amount: {product.amount}</h4>
 
