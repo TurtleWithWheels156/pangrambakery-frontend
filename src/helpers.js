@@ -1,4 +1,4 @@
-const API = 'http://localhost:3333';
+const API = 'https://6y8pqt1ly8.execute-api.us-east-1.amazonaws.com/dev';
 const axios = require('axios');
 // Helper function to fetch data from API.
 export async function fetchFromAPI(endpointURL, opts) {
