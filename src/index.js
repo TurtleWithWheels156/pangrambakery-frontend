@@ -5,6 +5,9 @@ import App from './App';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import Amplify from 'aws-amplify'
+import config from './aws-exports'
+Amplify.configure(config)
 
 export const stripePromise = loadStripe(
   'pk_test_51KHcxzGkESe8kP2M0wTCXE6svy0BZHKhVrzwdoMEmatmeuiN6ZEHAwwLScQVeFeWFPvH0UVRIOdeLfN5UXUTcdMT00lMn1AYhj'

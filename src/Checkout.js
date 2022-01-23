@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'; //useState to manage state of application
 import { fetchFromAPI } from './helpers';
+// Import the API category from AWS Amplify
+import { API } from 'aws-amplify';
 import { useStripe } from '@stripe/react-stripe-js'; 
 // hook from stripe library to directly use stripe sdk in component
 // easy to access stripe in component
@@ -27,9 +29,11 @@ export function Checkout() {
         mode: 'payment'
         }
         //destructure sessionId from checkout API
-        const { data: res } = await fetchFromAPI('checkouts', {
+        /*const { data: res } = await fetchFromAPI('checkouts', {
           data
-        });
+        });*/
+
+        const res = await API.post('api14106f2f', '/checkouts', data);
 
         console.log(`${JSON.stringify(res.id)}` );
     
