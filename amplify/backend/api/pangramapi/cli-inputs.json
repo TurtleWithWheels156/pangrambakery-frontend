@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/checkouts": {
+      "name": "/checkouts",
+      "lambdaFunction": "pangramfunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

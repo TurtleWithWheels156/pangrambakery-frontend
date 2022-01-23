@@ -12,14 +12,11 @@
       "AmplifyAppId": "dkg1do6ekuxk9"
     },
     "categories": {
-      "auth": {
-        "pangrambakery71a9ba0c": {}
-      },
       "function": {
-        "stripedemofunction": {
+        "pangramfunction": {
           "secretsPathAmplifyAppId": "dkg1do6ekuxk9",
           "deploymentBucketName": "amplify-pangrambakery-dev-01007-deployment",
-          "s3Key": "amplify-builds/stripedemofunction-714c752b654e382b6e63-build.zip"
+          "s3Key": "amplify-builds/pangramfunction-54665273344d487a364f-build.zip"
         }
       }
     }

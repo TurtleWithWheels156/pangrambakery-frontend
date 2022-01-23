@@ -12,10 +12,10 @@ See the License for the specific language governing permissions and limitations 
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
-import { createStripeCheckoutSession } from './checkout';
-import { createPaymentIntent } from './payments';
-import { handleStripeWebhook } from './webhooks';
-import cors from 'cors';
+const createStripeCheckoutSession = require('./checkout');
+const createPaymentIntent = require('./payments');
+//const webhooks = require('./webhooks');
+const cors = require('cors');
 
 const aws = require('aws-sdk');
 var express = require('express')
@@ -49,8 +49,10 @@ const getStripeKey = async () => {
   return Parameters[0].Value
 }
 
-const stripeKey = await getStripeKey()
-export const stripe = require('stripe')(stripeKey)
+/*export const stripe = async () => {
+  const stripeKey = await getStripeKey()
+  return require('stripe')(stripeKey)
+}*///don't use
 
 /*export const stripe = new Stripe(process.env.STRIPE_SECRET, {
   apiVersion: '2020-08-27',
@@ -82,9 +84,11 @@ app.post(
   '/checkouts',
   //async callback to handle req and resp
   runAsync(async ({ body }, res) => {
+    const stripeKey = await getStripeKey()
+    const stripe = require('stripe')(stripeKey)
     //await to receive body information then execute code 
     console.log(body);
-    res.send(await createStripeCheckoutSession(body.line_items, body.mode));
+    res.send(await createStripeCheckoutSession(stripe, body.line_items, body.mode));
   })
 );
 
@@ -95,13 +99,15 @@ app.post(
 app.post(
   '/payments',
   runAsync(async ({ body }, res) => {
+    const stripeKey = await getStripeKey()
+    const stripe = require('stripe')(stripeKey)
     res.send(
-      await createPaymentIntent(body.amount)
+      await createPaymentIntent(stripe, body.amount)
     );
   })
 );
 
-app.post('/hooks', runAsync(handleStripeWebhook));
+//app.post('/hooks', runAsync(webhooks.handleStripeWebhook));
 
 app.listen(3000, function() {
     console.log("App started")

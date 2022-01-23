@@ -33,7 +33,7 @@ export function Checkout() {
           data
         });*/
 
-        const res = await API.post('api14106f2f', '/checkouts', data);
+        const res = await API.post('pangramapi', '/checkouts', data);
 
         console.log(`${JSON.stringify(res.id)}` );
     
