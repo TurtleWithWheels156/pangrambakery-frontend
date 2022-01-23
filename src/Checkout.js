@@ -10,13 +10,8 @@ import { useStripe } from '@stripe/react-stripe-js';
 export function Checkout() {
     const stripe = useStripe();
     const [product, setProduct] = useState({
-        name: 'Shokupan',
         description: 'Milk Bread Cube. Perfect for sandos and french toast.',
-        images: [
-            'https://www.atelierlalune.com/wp-content/uploads/2020/02/shokupan11-1024x685.jpg'
-        ],
-        amount: 799,
-        currency: 'usd',
+        price: 'price_1KKxQcGkESe8kP2MgoPx2OPt',
         quantity: 0,
     });
 
@@ -25,7 +20,12 @@ export function Checkout() {
     setProduct({ ...product, quantity: Math.max(0, product.quantity + v) });
 
     const handleClick = async (event) => {
-        const data = { line_items: [product] }
+        const data = { line_items: [{
+            price: 'price_1KKxQcGkESe8kP2MgoPx2OPt',
+            quantity: product.quantity,
+        }],
+        mode: 'payment'
+        }
         //destructure sessionId from checkout API
         const { data: res } = await fetchFromAPI('checkouts', {
           data
@@ -54,7 +54,7 @@ export function Checkout() {
                 <h3>{product.name}</h3>
                 <h4>Stripe Amount: {product.amount}</h4>
 
-                <img src={product.images[0]} width="250px" alt="product" />
+                <img src="https://www.atelierlalune.com/wp-content/uploads/2020/02/shokupan11-1024x685.jpg" width="250px" alt="product" />
 
                 <button
                 onClick={() => changeQuantity(-1)}>
