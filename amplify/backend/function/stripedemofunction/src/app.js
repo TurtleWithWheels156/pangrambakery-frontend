@@ -26,14 +26,21 @@ See the License for the specific language governing permissions and limitations 
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
+import { createStripeCheckoutSession } from './checkout';
+import { createPaymentIntent } from './payments';
+import { handleStripeWebhook } from './webhooks';
 
+const aws = require('aws-sdk');
 var express = require('express')
-var bodyParser = require('body-parser')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
 // declare a new express app
 var app = express()
-app.use(bodyParser.json())
+app.use(
+  express.json({
+    verify: (req, res, buffer) => (req['rawBody'] = buffer),
+  })
+);
 app.use(awsServerlessExpressMiddleware.eventContext())
 
 // Enable CORS for all methods
@@ -43,62 +50,69 @@ app.use(function(req, res, next) {
   next()
 });
 
+const getStripeKey = async () => {
+  const { Parameters } = await (new aws.SSM())
+    .getParameters({
+      Names: ['stripe_key'].map(secretName => process.env[secretName]),
+      WithDecryption: true
+    })
+    .promise()
+  return Parameters[0].Value
+}
 
-/**********************
- * Example get method *
- **********************/
+const stripeKey = await getStripeKey()
+export const stripe = require('stripe')(stripeKey)
 
-app.get('/webhook', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
+/*export const stripe = new Stripe(process.env.STRIPE_SECRET, {
+  apiVersion: '2020-08-27',
+});*/
 
-app.get('/webhook/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
+//moved because was missing references/configs
+//most likely not working because no access to express json config
 
-/****************************
-* Example post method *
-****************************/
+/**
+ * Catch async errors when awaiting promises 
+ * if error occurs, catch error and sends error response from endpoint
+ * can wrap this around any endpoint callback that we may need
+ * req: body from client
+ * res: body to send back
+ * next: pass control to next matching route
+ */
+ function runAsync(callback) {
+  return (req, res, next) => {
+    // if req to stripe comes back with error (express usually doesn't catch this, and api hangs till timeout (limbo issue))
+    callback(req, res, next).catch(next);
+  };
+}
 
-app.post('/webhook', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
+//api endpoint that can create checkout session
+/**
+ * Checkouts
+ */
+app.post(
+  '/checkouts/',
+  //async callback to handle req and resp
+  runAsync(async ({ body }, res) => {
+    //await to receive body information then execute code 
+    console.log(body);
+    res.send(await createStripeCheckoutSession(body.line_items, body.mode));
+  })
+);
 
-app.post('/webhook/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
+/**
+ * Payment Intents
+ */
 
-/****************************
-* Example put method *
-****************************/
+app.post(
+  '/payments',
+  runAsync(async ({ body }, res) => {
+    res.send(
+      await createPaymentIntent(body.amount)
+    );
+  })
+);
 
-app.put('/webhook', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/webhook/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/webhook', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/webhook/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
+app.post('/hooks', runAsync(handleStripeWebhook));
 
 app.listen(3000, function() {
     console.log("App started")
