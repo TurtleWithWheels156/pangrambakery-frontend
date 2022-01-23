@@ -7,6 +7,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/checkouts": {
+      "name": "/checkouts",
+      "lambdaFunction": "stripedemofunction",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

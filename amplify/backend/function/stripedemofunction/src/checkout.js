@@ -15,7 +15,7 @@ export async function createStripeCheckoutSession(
   mode
 ) {
 
-  const url = 'http://localhost:3333'; //process.env.WEBAPP_URL;
+  const url = 'https://6y8pqt1ly8.execute-api.us-east-1.amazonaws.com/dev'; //process.env.WEBAPP_URL;
 
   //how checkout session behaves
   const session = await stripe.checkout.sessions.create({

@@ -93,7 +93,7 @@ export const stripe = require('stripe')(stripeKey)
  * Checkouts
  */
 app.post(
-  '/checkouts/',
+  '/checkouts',
   //async callback to handle req and resp
   runAsync(async ({ body }, res) => {
     //await to receive body information then execute code 

@@ -19,7 +19,7 @@
         "stripedemofunction": {
           "secretsPathAmplifyAppId": "dkg1do6ekuxk9",
           "deploymentBucketName": "amplify-pangrambakery-dev-01007-deployment",
-          "s3Key": "amplify-builds/stripedemofunction-6c2f6772317442764e54-build.zip"
+          "s3Key": "amplify-builds/stripedemofunction-714c752b654e382b6e63-build.zip"
         }
       }
     }
