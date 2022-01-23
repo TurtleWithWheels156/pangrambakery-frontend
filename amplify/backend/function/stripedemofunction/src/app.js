@@ -29,6 +29,7 @@ Amplify Params - DO NOT EDIT */
 import { createStripeCheckoutSession } from './checkout';
 import { createPaymentIntent } from './payments';
 import { handleStripeWebhook } from './webhooks';
+import cors from 'cors';
 
 const aws = require('aws-sdk');
 var express = require('express')
@@ -49,6 +50,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "*")
   next()
 });
+
+app.use( cors({ origin: true }));
 
 const getStripeKey = async () => {
   const { Parameters } = await (new aws.SSM())
